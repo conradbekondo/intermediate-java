@@ -1,4 +1,4 @@
-package ca.quickdo.intermediatejava;
+package ca.quickdo.module2;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

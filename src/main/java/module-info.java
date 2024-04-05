@@ -4,6 +4,8 @@ module ca.quickdo.intermediatejava {
 
     requires org.controlsfx.controls;
 
-    opens ca.quickdo.intermediatejava to javafx.fxml;
-    exports ca.quickdo.intermediatejava;
+    opens ca.quickdo.module2 to javafx.fxml;
+    opens ca.quickdo.module4 to javafx.fxml;
+//    exports ca.quickdo.module2;
+    exports ca.quickdo.module4;
 }

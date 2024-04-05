@@ -1,4 +1,4 @@
-package ca.quickdo.intermediatejava;
+package ca.quickdo.module2;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
