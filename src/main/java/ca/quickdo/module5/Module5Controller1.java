@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Module5Controller {
+public class Module5Controller1 {
 
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final Random randomizer = new Random();

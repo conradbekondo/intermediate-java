@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Module5Application extends Application {
-    private Module5Controller controller;
+    private Module5Controller2 controller;
 
     @Override
     public void stop() throws Exception {
