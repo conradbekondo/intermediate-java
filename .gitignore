@@ -6,6 +6,7 @@ target/
 *.iws
 *.iml
 *.ipr
+src/main/resources/ca/quickdo/module5/env.properties
 
 ### Eclipse ###
 .apt_generated

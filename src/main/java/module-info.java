@@ -1,6 +1,8 @@
 module ca.quickdo.intermediatejava {
     requires javafx.controls;
     requires javafx.fxml;
+    requires lombok;
+    requires java.sql;
 
     requires org.controlsfx.controls;
 

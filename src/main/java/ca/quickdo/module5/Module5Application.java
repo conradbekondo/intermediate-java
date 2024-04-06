@@ -11,8 +11,8 @@ public class Module5Application extends Application {
 
     @Override
     public void stop() throws Exception {
-        if(controller == null) return;
-        controller.shutdown();
+        if (controller != null)
+            controller.shutdown();
     }
 
     public static void main(String[] args) {

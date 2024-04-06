@@ -1,9 +1,11 @@
 package ca.quickdo.module5;
 
+import ca.quickdo.module5.services.PeopleService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,10 +26,11 @@ public class Module5Controller {
         btnLaunchTask.setOnAction(this::onBtnLaunchTaskClicked_Executors);
     }
 
-    public void shutdown() {
+    public void shutdown() throws SQLException {
         executorService.shutdownNow();
         if(threads.isEmpty()) return;
         threads.forEach(Thread::stop);
+        PeopleService.shutdown();
     }
 
     private void simulateSlowAction() {
