@@ -3,6 +3,7 @@ package ca.quickdo.module5;
 import ca.quickdo.module5.model.Person;
 import ca.quickdo.module5.services.PeopleService;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -28,6 +29,7 @@ public class Module5Controller2 {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     private final ObservableList<Person> people = FXCollections.observableArrayList();
+    private final ObservableList<String> cities = FXCollections.observableArrayList();
 
     @FXML
     private TextField tfName;
@@ -88,19 +90,51 @@ public class Module5Controller2 {
         colAvatar.setCellValueFactory(param -> {
             ImageView imageView = new ImageView();
             executorService.submit(() -> {
-                try(final var imageStream = new URL(param.getValue().getAvatar()).openStream()){
+                try (final var imageStream = new URL(param.getValue().getAvatar()).openConnection().getInputStream()) {
                     Platform.runLater(() -> imageView.setImage(new Image(imageStream)));
-                }catch(IOException ex) {
+                } catch (IOException ex) {
                     System.err.println(ex);
                 }
             });
             return new SimpleObjectProperty<>(imageView);
         });
         tvPeople.setItems(people);
+        cbCity.setItems(cities);
         executorService.submit(() -> {
-            final var results = PeopleService.getPeople(Integer.MAX_VALUE);
-            Platform.runLater(() -> people.setAll(results));
+            try {
+                final var cities = PeopleService.findAllCities();
+                Platform.runLater(() -> Module5Controller2.this.cities.setAll(cities));
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
         });
+        executorService.submit(() -> {
+            try {
+                final var results = PeopleService.getPeople(Integer.MAX_VALUE);
+                Platform.runLater(() -> people.setAll(results));
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
+        });
+        btnSave.disableProperty().bind(
+                Bindings.or(
+                        tfName.textProperty().isEmpty(),
+                        tfEmail.textProperty().isEmpty()
+                ).or(cbCity.valueProperty().isNull())
+        );
+        btnSave.setOnAction(e -> executorService.submit(() -> {
+            try {
+                final var person = PeopleService.save(Person.builder()
+                        .names(tfName.getText())
+                        .email(tfEmail.getText())
+//                        .phone(tfPhone.getText())
+                        .city(cbCity.getValue())
+                        .build());
+                Platform.runLater(() -> people.add(person));
+            } catch (Exception ex) {
+                System.err.println(ex);
+            }
+        }));
     }
 
     public void shutdown() throws SQLException {
