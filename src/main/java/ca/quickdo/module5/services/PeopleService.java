@@ -102,4 +102,19 @@ public class PeopleService {
             }
         }
     }
+
+    /**
+     * Deletes a person record by their database ID
+     * @param id The person's database ID
+     * @return success status of the operation
+     * @throws SQLException
+     */
+    public static boolean deleteById(int id) throws SQLException {
+        assertConnection();
+        final var sql = "DELETE FROM people where id = ?;";
+        try(var statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            return statement.execute();
+        }
+    }
 }
